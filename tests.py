@@ -1,12 +1,13 @@
 from aria import *
+from aria.action import wavedash
 import os
 import math
 from os.path import expanduser
 home = expanduser("~")
 
 dolphin = home + "/Library/Application Support/Dolphin/"
-mm = MemoryManager()
-p = Pad(dolphin + "Pipes/aria")
+mm = MemoryManager(dolphin)
+p = Pad(dolphin)
 
 def print_clear(*s):
     os.system("clear")
@@ -60,5 +61,14 @@ def crouch_when_near():
                 p.tilt_stick(Stick.MAIN, .5, 1)
             else:
                 p.reset()
-        
-crouch_when_near()
+
+# AI tests begin
+def wavedash_if_near():
+    ai = AI()
+    while True:
+        distance = ai.x_dist()
+        if distance:
+            if distance < 20:
+                ai.perform([wavedash])
+
+wavedash_if_near()

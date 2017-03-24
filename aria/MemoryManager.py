@@ -1,7 +1,5 @@
 from aria.MemoryWatcher import MemoryWatcher
-from os.path import expanduser
 from aria.mem import mem
-home = expanduser("~")
 
 class MemoryManager:
     alias = {"P1 X": "00453090",
@@ -19,8 +17,8 @@ class MemoryManager:
              "00453F70": mem("i")}
     keys = len(table.keys())
     path = "MemoryWatcher"
-    def __init__(self):
-        self.path = home + "/Library/Application Support/Dolphin/MemoryWatcher/" + self.path
+    def __init__(self, path):
+        self.path = path + "/MemoryWatcher/" + self.path
         self.mw = MemoryWatcher(self.path)
         self.mw.__enter__()
     

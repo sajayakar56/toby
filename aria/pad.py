@@ -32,7 +32,7 @@ class Pad:
     def __init__(self, path):
         """Create, but do not open the fifo."""
         self.pipe = None
-        self.path = path
+        self.path = path + "Pipes/aria"
         try:
             os.mkfifo(self.path)
         except OSError:
