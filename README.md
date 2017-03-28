@@ -3,6 +3,9 @@ A Melee AI (that only plays black Marth) that will hopefully use Machine Learnin
 
 # Credits to (in no particular order)
 spxtr's MemoryWatcher within Dolphin
+
 spxtr/p3
+
 altf4/SmashBot
+
 vladfi1/phillip
