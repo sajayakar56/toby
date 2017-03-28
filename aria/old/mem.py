@@ -1,11 +1,9 @@
 import struct
 
 # For the conversion methods, must pass in bytes!
-# From StackOverflow Q#1592158
 def hex_to_fp(s):
     return struct.unpack(">f", s)[0]
 
-# This doesn't work!
 def hex_to_int(s):
     # Padding to length 4 (WHY DOESN'T IT COME THIS WAY)
     s = s.ljust(4, b'\0')

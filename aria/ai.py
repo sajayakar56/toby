@@ -1,49 +1,50 @@
-import os
-import math
-from aria.action import *
-from aria.MemoryManager import MemoryManager
-from aria.pad import Pad, Button, Stick
+from .MemoryMap import MemoryMap
+from .PadManager import PadManager
 import time
-from os.path import expanduser
-home = expanduser("~")
-dolphin = home + "/Library/Application Support/Dolphin/"
+
 
 class AI:
     def __init__(self):
-        self.mm = MemoryManager(dolphin)
-        self.pad = Pad(dolphin)
-        self.performing = False
+        self.mm = MemoryMap()
+        self.pm = PadManager()
 
-    def perform(self, actions):
-        if self.performing:
-            return
-        self.performing = True
-        while actions:
-            action = actions.pop()
-            for frame in action.frames:
-                startTime = time.time()
-                for sa in frame.subs:
-                    self.parse_pad(sa)
-                while (time.time() - startTime < 1/60):
-                    pass
-        self.pad.reset()
-        self.performing = False
+    def do(self, action: list) -> None:
+        for frame in action:
+            for command in frame:
+                self.parse(command)
+            _wait_frame()
+        self.parse("r")
+        
+    # Wrapper for mm.lookup, not sure if should be public
+    def lookup(self, name: str, T: type = float) -> type:
+        return self.mm.lookup(name, T)
 
-    def x_dist(self):
-        self.mm.update()
-        p1x, p2x = self.mm.get("P1 X", "P2 X")
-        if (p1x and p2x):
-            distance = abs(p1x - p2x)
-            return distance
-        if not p2x:
-            self.perform([nudgeLeft])
-            return self.x_dist()
-        return None
+    # Yet another wrapper, not sure
+    def parse(self, s: str) -> None:
+        try:
+            self.pm.parse(s)
+        except Exception:
+            print("Malformed Query:", s)
 
-    def parse_pad(self, sub_action):
-        if sub_action.type == "press":
-            self.pad.press_button(Button[sub_action.thing])
-        elif sub_action.type == "release":
-            self.pad.release_button(Button[sub_action.thing])
-        elif sub_action.type == "tilt":
-            self.pad.tilt_stick(Stick[sub_action.thing], sub_action.x, sub_action.y)
+    # Actions
+    # Wavedashes from range [0, 1], where 0.5 is wavedash in place
+    @staticmethod
+    def waveDash(x: int) -> list:
+        y = 0.65
+        s = "t MAIN " + str(x) + " " + str(y)
+        return [(s, "p X"),
+                (),
+                (),
+                (),
+                (),
+                ("p R",)]
+
+    @staticmethod
+    def dTilt() -> list:
+        return [("t MAIN 0.5 0.6", "p A")]
+
+    
+def _wait_frame():
+    startTime = time.time()
+    while (time.time() - startTime < 1/60):
+        pass

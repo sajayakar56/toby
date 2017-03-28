@@ -1,5 +1,5 @@
-from aria.MemoryWatcher import MemoryWatcher
-from aria.mem import mem
+from MemoryWatcher import MemoryWatcher
+from mem import mem
 
 class MemoryManager:
     alias = {"P1 X": "00453090",

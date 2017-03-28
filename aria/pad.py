@@ -1,6 +1,8 @@
 # Source: spxtr/p3
 import enum
 import os
+home = os.path.expanduser("~")
+
 
 @enum.unique
 class Button(enum.Enum):
@@ -29,49 +31,44 @@ class Stick(enum.Enum):
 
 class Pad:
     """Writes out controller inputs."""
-    def __init__(self, path):
+    def __init__(self):
         """Create, but do not open the fifo."""
         self.pipe = None
-        self.path = path + "Pipes/aria"
+        self.path = home + "/Library/Application Support/Dolphin/Pipes/aria"
         try:
             os.mkfifo(self.path)
         except OSError:
             pass
-        self.__enter__()
-
-    def __enter__(self):
-        """Opens the fifo. Blocks until the other side is listening."""
-        self.pipe = open(self.path, 'w', buffering=1)
-        return self
+        self.pipe = open(self.path, 'w', buffering = 1)
 
     def __exit__(self, *args):
         """Closes the fifo."""
         if self.pipe:
             self.pipe.close()
 
-    def press_button(self, button):
+    def press_button(self, button: Button) -> None:
         """Press a button."""
         assert button in Button
         self.pipe.write('PRESS {}\n'.format(button.name))
 
-    def release_button(self, button):
+    def release_button(self, button: Button) -> None:
         """Release a button."""
         assert button in Button
         self.pipe.write('RELEASE {}\n'.format(button.name))
 
-    def press_trigger(self, trigger, amount):
+    def press_trigger(self, trigger: Trigger, amount: float) -> None:
         """Press a trigger. Amount is in [0, 1], with 0 as released."""
         assert trigger in Trigger
         assert 0 <= amount <= 1
         self.pipe.write('SET {} {:.2f}\n'.format(trigger.name, amount))
 
-    def tilt_stick(self, stick, x, y):
+    def tilt_stick(self, stick: Stick, x: float, y: float) -> None:
         """Tilt a stick. x and y are in [0, 1], with 0.5 as neutral."""
         assert stick in Stick
         assert 0 <= x <= 1 and 0 <= y <= 1
         self.pipe.write('SET {} {:.2f} {:.2f}\n'.format(stick.name, x, y))
 
-    def reset(self):
+    def reset(self) -> None:
         for button in Button:
             self.release_button(button)
         for trigger in Trigger:

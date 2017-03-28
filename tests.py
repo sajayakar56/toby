@@ -1,5 +1,4 @@
 from aria import *
-from aria.action import wavedash
 import os
 import math
 from os.path import expanduser
@@ -66,9 +65,11 @@ def crouch_when_near():
 def wavedash_if_near():
     ai = AI()
     while True:
-        distance = ai.x_dist()
+        distance = ai.distance_x()
         if distance:
             if distance < 20:
-                ai.perform([wavedash])
+                ai.do([ai.wavedash])
+            else:
+                ai.chill()
 
 wavedash_if_near()
