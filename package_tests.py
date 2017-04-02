@@ -1,13 +1,16 @@
 import aria
+from aria.StateManager import State as s
+import os
 
 
 def memory_map_tests():
-    ai = aria.AI()
+    prev = 0.0
     while True:
-        data = ai.lookup("P1 X", float)
-        if data:
+        data = s.p1.x
+        if prev != data:
             print(data)
-            return
+            prev = data
+
 
 
 def ai_parser():
@@ -20,9 +23,23 @@ def ai_dTilt():
     x = aria.AI()
     x.do(x.dTilt)
 
+
 def ai_waveDash():
     x = aria.AI()
     x.do(x.waveDash(0))
 
+
+def mm_print():
+    x = aria.AI()
+    prev = ""
+    while True:
+        string = str(x.mm)
+        if (string != prev):
+            print(string)
+            prev = string
+
+
+
+
 if __name__ == "__main__":
-    ai_waveDash()
+    memory_map_tests()
