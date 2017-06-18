@@ -9,6 +9,7 @@ class ai(aria.AI):
         
     # override
     def routine(self):
+        # print(self.sm.p2)
         if (self.sm.p2.x < -50 and not self.right):
             self.do(self.walkRight)
             self.right = True

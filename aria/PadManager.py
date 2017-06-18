@@ -12,6 +12,7 @@ class PadManager:
         # trigger 0.5 -> "tr R 0.5"
         # reset -> "r"
         # release A -> "r A"
+        # do nothing -> -
         s = s.split(" ")
         if s[0] == "r":
             if len(s) == 1:

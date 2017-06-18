@@ -29,6 +29,7 @@ class Stick(enum.Enum):
     MAIN = 0
     C = 1
 
+
 class Pad:
     """Writes out controller inputs."""
     def __init__(self):

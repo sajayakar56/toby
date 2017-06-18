@@ -23,8 +23,13 @@ class MemoryWatcher:
             data = self.sock.recvfrom(1024)[0].split(b'\n')
             # removes the \x00 from the end of addr
             data[1] = data[1][:-1]
-            # turns the addr into an int
-            data[0] = int(data[0], 16)
+            # adds the memory addr to its offset
+            if 32 in data[0]:
+                addr, offset = data[0].split(b' ')
+                data[0] = int(addr, 16) + int(offset, 16)
+            else:
+                # turns the addr into an int
+                data[0] = int(data[0], 16)
             # Handling for resetting value?
             if data[1] != b'0':
                 # turns the value into true bytes
