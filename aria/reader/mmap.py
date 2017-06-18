@@ -1,4 +1,5 @@
 from .watcher import MemoryWatcher
+import struct
 
 class MemoryMap:
     # int32 addr -> value: bytes
