@@ -1,4 +1,4 @@
-# aria
+# arya
 A framework for reading Melee memory in the Dolphin emulator as well as sending pad inputs through UNIX Pipes.
 
 Will eventually be used to develop an AI 

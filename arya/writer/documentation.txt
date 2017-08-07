@@ -1,0 +1,10 @@
+Usage: from writer import Writer as _
+ Call Writer.parse with the language
+
+The language:
+press A -> "p A"
+tilt main 0.5, 0.5 -> "t MAIN 0.5 0.5"
+trigger 0.5 -> "tr R 0.5"
+reset -> "r"
+release A -> "r A"
+do nothing -> -
