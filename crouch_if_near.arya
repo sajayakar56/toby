@@ -1,1 +1,0 @@
-if (?dist < 25) (do crouch) (stop)
