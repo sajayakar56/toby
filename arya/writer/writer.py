@@ -1,15 +1,27 @@
-# from .Pad import *
+from collections import deque
+from .Pad import Pad
 
 
-class Writer(threading.Thread):
+class Writer():
     def __init__(self):
         super().__init__()
         self.p = Pad()
-        self.frames = LinkedList()
+        self.frames = deque()
 
-    # will separate actions and frames, as well as run them in loop
+    # Function to perform multiple frames
     def parse(self, s: str) -> None:
-        return None
+        # Frames are split by semicolons
+        frames = s.split(";")
+        self.frames.extend(frames)
+
+    # Sends one frame's worth of inputs
+    def advance(self) -> None:
+        if not len(self.frames):
+            return
+        frame = self.frames.popleft()
+        actions = frame.split(",")
+        for action in actions:
+            self._do_action(action)
 
     # will re-instantiate the linked list
     def clear(self) -> None:
@@ -36,42 +48,3 @@ class Writer(threading.Thread):
         elif s[0] == "tr":
             amt = float(s[2])
             self.p.press_trigger(Trigger[s[1]], amt)
-
-
-# FIFO is the best way to handle the storage and execution of frames as data
-class LinkedList:
-    class Node:
-        def __init__(self, item: str = None):
-            self.item = item
-            if item is not None:
-                self.next = Node()
-            else:
-                self.next = None
-            
-    def __init__(self):
-        self.first = LinkedList.Node()
-        self.last = self.first
-        self.size = 0
-
-    def addLast(self, data: str) -> None:
-        self.last.item = data
-        self.last.next = LinkedList.Node()
-        self.last = self.last.next
-        self.size += 1
-
-    def removeFirst(self) -> str:
-        if self.size > 0:
-            data = self.first.item
-            self.first = self.first.next
-            self.size -= 1
-            return data
-        return None
-    
-    def size(self) -> int:
-        return self.size
-
-
-
-    
-    
-
