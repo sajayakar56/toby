@@ -23,6 +23,19 @@ class MemoryMap:
             received_data = self.mw.receive()
 
 
+# Should be global Melee State class? 
+# Contains current stage, state counter, etc?
+class State:
+    def __init__(self, mm):
+        self.mm = mm
+
+    @property
+    def frame(self) -> float:
+        raw_value = self.mm.lookup(0x479d60)
+        print(raw_value)
+        return_val = bytes_to_int(raw_value)
+        return return_val
+
 # Need to revisit this code when I actually remember how it works            
 class Player:
     def __init__(self, number, mm):

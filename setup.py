@@ -20,7 +20,7 @@ if not os.path.isfile(dolphin + "/MemoryWatcher/MemoryWatcher"):
 # Install the padfile 
 print("Writing GameCube controller config...")
 CONFIG = open("gc_profile.ini", "r")
-data = CONFIG.read()wdaw
+data = CONFIG.read()
 CONFIG.close()
 FILE = open(dolphin + "/Config/Profiles/GCPad/gc_profile.ini", "w")
 FILE.write(data)

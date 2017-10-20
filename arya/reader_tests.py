@@ -1,6 +1,7 @@
-from reader import *
+from reader import Reader
 import os
 
 while True:
-    print(p1)
-    os.system("clear")
+    r = Reader()
+    r.update()
+    # os.system("clear")
