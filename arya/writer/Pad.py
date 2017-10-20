@@ -35,7 +35,7 @@ class Pad:
     def __init__(self):
         """Create, but do not open the fifo."""
         self.pipe = None
-        self.path = home + "/Library/Application Support/Dolphin/Pipes/aria"
+        self.path = home + "/Library/Application Support/Dolphin/Pipes/arya"
         try:
             os.mkfifo(self.path)
         except OSError:
