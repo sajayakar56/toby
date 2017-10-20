@@ -10,6 +10,7 @@ Tested only with Dolphin 5.0-5681
 - Enable Netplay Community Settings!
 - /MemoryWatcher/MemoryWatcher (run mkfifo MemoryWatcher here)
 - Put Locations.txt -> MemoryWatcher/Locations.txt
+- Create Pipes/arya (mkfifo arya)
 
 # Credits 
 spxtr's MemoryWatcher within Dolphin

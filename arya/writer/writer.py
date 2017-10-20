@@ -1,17 +1,17 @@
 from collections import deque
-from .Pad import Pad
+from .pad import Pad, Button, Stick, Trigger
 
 
-class Writer():
+class Writer:
     def __init__(self):
-        super().__init__()
         self.p = Pad()
+        self.p.__enter__()
         self.frames = deque()
 
     # Function to perform multiple frames
-    def parse(self, s: str) -> None:
+    def parse(self, s: str, sep: str = "; ") -> None:
         # Frames are split by semicolons
-        frames = s.split(";")
+        frames = s.split(sep)
         self.frames.extend(frames)
 
     # Sends one frame's worth of inputs
@@ -19,7 +19,7 @@ class Writer():
         if not len(self.frames):
             return
         frame = self.frames.popleft()
-        actions = frame.split(",")
+        actions = frame.split(", ")
         for action in actions:
             self._do_action(action)
 
