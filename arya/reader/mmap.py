@@ -31,10 +31,10 @@ class State:
 
     @property
     def frame(self) -> float:
-        raw_value = self.mm.lookup(0x479d60)
-        print(raw_value)
-        return_val = bytes_to_int(raw_value)
-        return return_val
+        return self.mm.lookup(0x479d60)
+
+    def __str__(self) -> str:
+        return str(self.frame)
 
 # Need to revisit this code when I actually remember how it works            
 class Player:
