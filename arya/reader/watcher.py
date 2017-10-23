@@ -1,6 +1,7 @@
 import socket
 import os
 import struct
+import binascii
 home = os.path.expanduser("~")
 
 
@@ -13,32 +14,42 @@ class MemoryWatcher:
         except OSError:
             pass
         self.sock = socket.socket(socket.AF_UNIX, socket.SOCK_DGRAM)
-        self.sock.settimeout(0.001)
+        # self.sock.settimeout(0.001)
         self.sock.bind(self.path)
 
-    def receive(self) -> [str, bytes]:
+    def receive(self) -> [int, bytes]:
         try:
-            # recvfrom returns (bytes, '')
-            # splits the data into [addr, val]
-            data = self.sock.recvfrom(1024)[0].split(b'\n')
-            # removes the \x00 from the end of addr
-            data[1] = data[1][:-1]
-            # adds the memory addr to its offset
-            if 32 in data[0]:
-                addr, offset = data[0].split(b' ')
-                data[0] = int(addr, 16) + int(offset, 16)
-            else:
-                # turns the addr into an int
-                data[0] = int(data[0], 16)
-            # Handling for resetting value?
-            if data[1] != b'0':
-                # turns the value into true bytes
-                data[1] = hex_string_to_bytes(data[1])
-            else:
-                data[1] = bytes(0)
+            data = self.sock.recvfrom(32)[0].decode('utf-8').splitlines()
         except socket.timeout:
             return None
+        if " " in data[0]:
+            addr, offset = data[0].split()
+            data[0] = int(addr, 16) + int(offset, 16)
+        else:
+            data[0] = int(data[0], 16)
+        data[1] = binascii.unhexlify(data[1].strip('\x00').zfill(8))
         return data
+        # try:
+        #     # splits the data into [addr, val]
+        #     data = self.sock.recvfrom(32)[0].split(b'\n')
+        #     # removes the \x00 from the end of addr
+        #     data[1] = data[1][:-1]
+        #     # adds the memory addr to its offset
+        #     if 32 in data[0]:
+        #         addr, offset = data[0].split(b' ')
+        #         data[0] = int(addr, 16) + int(offset, 16)
+        #     else:
+        #         # turns the addr into an int
+        #         data[0] = int(data[0], 16)
+        #     # Handling for resetting value?
+        #     if data[1] != b'0':
+        #         # turns the value into true bytes
+        #         data[1] = hex_string_to_bytes(data[1])
+        #     else:
+        #         data[1] = bytes(0)
+        # except socket.timeout:
+        #     return None
+        # return data
 
 
 def hex_string_to_bytes(hex_string: bytes) -> bytes:

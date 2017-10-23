@@ -11,14 +11,13 @@ class Arya:
     def __init__(self):
         self.r = Reader()
         self.w = Writer()
-        self.update_loop()
 
-    def update_loop(self):
+    def debug_loop(self, frame_count: int):
         frames = []
         prev_frame = None
         frame = None
         prev_time = time.time()
-        while len(frames) < 1000:
+        while len(frames) < frame_count:
             self.r.update()
             frame = self.r.state.frame
             # Means the frame has advanced
@@ -26,11 +25,12 @@ class Arya:
                 curr_time = time.time()
                 frames.append(1/(curr_time - prev_time))
                 prev_time, prev_frame = curr_time, frame
-        lst = (sum([(x - 60)**2 for x in frames]) / 1000)
+        lst = (sum([(x - 60)**2 for x in frames]) / frame_count)
         self.x = sum([1 for x in frames if abs(60 - x) > 2])
         
 
 
 if __name__ == "__main__":
     a = Arya()
+    a.debug_loop(600)
     print(a.x)

@@ -17,7 +17,8 @@ class MemoryMap:
     # Debug this function to see if received data is ever multiple
     def update(self) -> None:
         received_data = self.mw.receive()
-        while received_data:
+        # while received_data:
+        if received_data:
             addr, value = received_data
             self.data[addr] = value
             received_data = self.mw.receive()
