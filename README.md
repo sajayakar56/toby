@@ -1,5 +1,6 @@
 # arya
-A framework for reading Melee memory in the Dolphin emulator as well as sending pad inputs through UNIX Pipes.
+Discontinued.
+A framework for reading Melee memory in the Dolphin emulator as well as sending pad inputs through UNIX Pipes. Made a cool POC where an AI crouched when you got near.
 
 # Features
 - Threaded memory reader that dumps any memory values received into a database
